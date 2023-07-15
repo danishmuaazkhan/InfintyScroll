@@ -1,7 +1,7 @@
 // Unsplash API
 const count = 12; // Number of photos to fetch from the API
 const apiKey = 'hAS90NiV0dFIwe5GBLnGYtMbxEp16Cl2eOX5817Y-hI'; // Your Unsplash API key
-const apiUrl = `https://api.unsplash.com/photos/random/?client_id=${apiKey}&count=${count}&orientation=squarish`; // API URL for fetching random photos
+const apiUrl = `https://api.unsplash.com/photos/random/?client_id=${apiKey}&count=${count}`; // API URL for fetching random photos
 
 const imgContainer = document.querySelector('.img-container'); // Container for displaying the images
 const loader = document.querySelector('.loader'); // Loader element
@@ -68,3 +68,7 @@ function complete() {
 }
 
 getPhotos(); // Fetch and display the photos when the page loads
+window.addEventListener('scroll',() => {
+    
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 1000) getPhotos();
+} )
