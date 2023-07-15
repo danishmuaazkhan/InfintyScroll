@@ -1,48 +1,59 @@
+// Unsplash API
+const count = 12; // Number of photos to fetch from the API
+const apiKey = 'hAS90NiV0dFIwe5GBLnGYtMbxEp16Cl2eOX5817Y-hI'; // Your Unsplash API key
+const apiUrl = `https://api.unsplash.com/photos/random/?client_id=${apiKey}&count=${count}&orientation=squarish`; // API URL for fetching random photos
 
-// Unsplash API 
-const count = 12;
-const apiKey = 'hAS90NiV0dFIwe5GBLnGYtMbxEp16Cl2eOX5817Y-hI';
-const apiUrl = `https://api.unsplash.com/photos/random/?client_id=${apiKey}&count=${count}&orientation=squarish`;
+const imgContainer = document.querySelector('.img-container'); // Container for displaying the images
+const loader = document.querySelector('.loader'); // Loader element
 
-const imgContainer = document.querySelector('.img-container');
-const loader = document.querySelector('.loader');
+let photosArray = []; // Array to store the fetched photos
 
-// Get photos from Unspash API
-async function getPhoto() {
-    loading();
+// Function to fetch photos from the Unsplash API
+async function getPhotos() {
+    loading(); // Show the loader
     try {
         const response = await fetch(apiUrl);
-        const data = await response.json();
-        console.log(data);
-        setphoto(data);
-        complete();
+        photosArray = await response.json(); // Store the fetched photos in the photosArray
+        console.log(photosArray);
+        displayPhotos(photosArray); // Display the fetched photos
+        complete(); // Hide the loader
     }
     catch (error) {
         alert(error);
     }
 }
 
-// Set Photos in image container 
-function setphoto(obj) {
-    for (let key in obj) {
-        const link = obj[key].urls.full;
-        imgContainer.innerHTML += `<img src=${link}>`
-    }
+// Function to create elements for links and photos and add them to the DOM
+function displayPhotos() {
+    // Iterate through each photo in the photosArray
+    photosArray.forEach((photo) => {
+        // Create an anchor tag to link to the Unsplash photo
+        const item = document.createElement('a');
+        item.setAttribute('href', photo.links.html);
+        item.setAttribute('target', '_blank');
+
+        // Create an image element for the photo
+        let img = document.createElement('img')
+        img.setAttribute('src', photo.urls.regular);
+        img.setAttribute('alt', photo.alt_description);
+        img.setAttribute('title', photo.alt_description);
+
+        // Append the image inside the anchor tag and both inside the imgContainer
+        item.appendChild(img)
+        imgContainer.appendChild(item);
+    });
 }
 
-//Loading animation Start
+// Function to show the loading animation
 function loading() {
-    loader.style.visibility = 'visible'
-    imgContainer.setAttribute('display', 'none' );
+    loader.style.visibility = 'visible';
+    imgContainer.style.display = 'none';
 }
 
-// Loading Complete
+// Function to hide the loading animation
 function complete() {
-    loader.style.visibility = 'hidden'
-    imgContainer.setAttribute('display', 'flex' );
+    loader.style.visibility = 'hidden';
+    imgContainer.style.display = 'flex';
 }
 
-
-
-
-getPhoto();
+getPhotos(); // Fetch and display the photos when the page loads
