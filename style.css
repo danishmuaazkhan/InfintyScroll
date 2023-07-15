@@ -35,7 +35,6 @@ h1 {
     display: flex;
     justify-content: center;
     align-items: center;
-    visibility: hidden;
 }
 
 /* Styles for the img-container */
